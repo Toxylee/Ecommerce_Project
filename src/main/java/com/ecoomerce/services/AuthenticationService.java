@@ -18,10 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Transactional
@@ -32,10 +29,13 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
-
-
     public final ModelMapper modelMapper;
 
+    private String merchantCode(){
+        Random random = new Random();
+        int productCode = random.nextInt(9000)+1000;
+        return "M-".concat(String.valueOf(productCode));
+    }
     public MerchantResponse registerMerchant(MerchantRequest load){
         String encodedPassword = passwordEncoder.encode(load.getPassword());
         Roles userRole = roleRepository.findByAuthority("MERCHANT").get();
@@ -45,6 +45,7 @@ public class AuthenticationService {
         merchant.setUsername(load.getEmail());
         merchant.setEmail(load.getEmail());
         merchant.setPassword(encodedPassword);
+        merchant.setMerchantCode(merchantCode());
         merchant.setFirstName(load.getFirstName());
         merchant.setLastName(load.getLastName());
         merchant.setDateCreated(new Date());

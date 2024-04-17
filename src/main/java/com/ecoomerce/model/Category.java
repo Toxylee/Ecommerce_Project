@@ -45,10 +45,20 @@ public class Category implements Serializable {
     @Column(name = "category_code")
     private String categoryCode;
 
+    @Column(name = "date_created")
+    private Date dateCreated;
+
+    @Column(name = "last_modified")
+    private Date lastModified;
+
     @JsonIgnore
     @OneToMany(mappedBy = "category")
     @Builder.Default
     private Set<Product> products = new LinkedHashSet<>();
 
-
+    public void addProduct(Product product) {
+        if (Objects.nonNull(product)) {
+          products.add(product);
+        }
+    }
 }

@@ -21,8 +21,13 @@ private final CategoryService categoryService;
     }
 
     @PutMapping("/update")
-    public CategoryResponse updateCategory(@RequestBody CategoryRequest request,@RequestParam("id")Long id){
-        return categoryService.updateCategory(request,id);
+    public CategoryResponse updateCategory(@RequestBody CategoryRequest request,@RequestParam("categoryCode")String categoryCode){
+        return categoryService.updateCategory(request,categoryCode);
+    }
+
+    @PostMapping("/add-product")
+    public String addProduct(@RequestParam("productCode")String productCode,@RequestParam("categoryCode")String categoryCode){
+        return categoryService.addProduct(productCode,categoryCode);
     }
 
     @GetMapping("/all")

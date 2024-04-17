@@ -56,7 +56,7 @@ public class SecurityConfiguration {
                 .authorizeRequests(auth -> {
                     auth.antMatchers("/auth/**").permitAll();
                     auth.antMatchers("/category/**").hasRole("MERCHANT");
-                   // auth.antMatchers("/user/**").hasAnyRole("ADMIN", "USER");
+                   auth.antMatchers("/product/**").hasRole("MERCHANT");
                     auth.anyRequest().authenticated();
                 });
 

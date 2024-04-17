@@ -1,139 +1,101 @@
 package com.ecoomerce.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Objects;
 
 @Entity
 //@Indexed
-@Table(name = "merchant")
+@Table(name = "product")
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @SuperBuilder
 @JsonIgnoreProperties(ignoreUnknown = true)
 @SequenceGenerator(
-        name = "merchant_sequence_gen",
+        name = "product_sequence_gen",
         sequenceName = "merchant_seq",
         allocationSize = 1)
-public class Product implements UserDetails {
+public class Product implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "merchant_sequence_gen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_sequence_gen")
     private Long id;
 
+    @Column(name = "product_code")
+    private String productCode;
 
-    @Column(name = "first_name")
-    private String firstName;
+    @Column(name = "product_name",unique = true)
+    private String productName;
 
+    @Column(name = "brand_name")
+    private String brandName;
 
-    @Column(name = "last_name")
-    private String lastName;
+    @Column(name = "description")
+    private String productDescription;
 
+    @Column(name = "quantity")
+    private int qty;
 
-    @Column(name = "email")
-    private String email;
+    @Column(name = "batch_number")
+    private String batchNumber;
 
-    @Column(name = "password")
-    private String password;
-    @Column(name = "business_name")
-    private String businessName;
+    @Column(name = "date_sold")
+    private Date dateSold;
+
+    @Column(name = "selling_price")
+    private BigDecimal sellingPrice;
+
+    @Column(name = "unit_price")
+    private BigDecimal unitPrice;
+
+    @Column(name = "cost_price")
+    private BigDecimal costPrice;
+
+    @Column(name = "image_url")
+    private String productImageUrl;
+
+    @Column(name = "uom")
+    private String unitOfMeasurement;
+
     @Column(name = "date_created")
     private Date dateCreated;
+
     @Column(name = "last_modified")
     private Date lastModified;
 
-    @ManyToMany(fetch=FetchType.EAGER)
-    @JoinTable(
-            name="user_role_junction",
-            joinColumns = {@JoinColumn(name="user_id")},
-            inverseJoinColumns = {@JoinColumn(name="role_id")}
-    )
-    private Set<Roles> authorities;
+    @ManyToOne
+    @JoinColumn(name = "category_fk")
+    private Category category;
 
-    public Product() {
-        super();
-        authorities = new HashSet<>();
-    }
+    @ManyToOne
+    @JoinColumn(name = "merchant_fk")
+    private Merchant merchant;
 
+    @Field
+    public String getDisplayName() {
+        StringBuilder displayNameBuilder = new StringBuilder();
 
-    public Product(Long id, String email, String password, Set<Roles> authorities) {
-        super();
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.authorities = authorities;
-    }
-
-    public Long getMerchantId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setAuthorities(Set<Roles> authorities) {
-        this.authorities = authorities;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        // TODO Auto-generated method stub
-        return this.authorities;
-    }
-
-    @Override
-    public String getPassword() {
-        // TODO Auto-generated method stub
-        return this.password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @Override
-    public String getUsername() {
-        // TODO Auto-generated method stub
-        return this.email;
-    }
-
-    public void setUsername(String username) {
-        this.email = username;
-    }
-
-    /* If you want account locking capabilities create variables and ways to set them for the methods below */
-    @Override
-    public boolean isAccountNonExpired() {
-        // TODO Auto-generated method stub
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        // TODO Auto-generated method stub
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        // TODO Auto-generated method stub
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        // TODO Auto-generated method stub
-        return true;
+        if (Objects.nonNull(brandName)) {
+            displayNameBuilder.append(brandName).append(" ");
+        }
+        if (Objects.nonNull(productName)) {
+            displayNameBuilder.append(productName).append(" ");
+        }
+        if (Objects.nonNull(qty) && qty > 1) {
+            displayNameBuilder.append(qty).append(" ");
+        }
+        return displayNameBuilder.toString().trim();
     }
 
 }

@@ -7,5 +7,6 @@ public class MerchantResponse {
     private String firstName;
     private String lastName;
     private String email;
+    private String merchantCode;
     private String businessName;
 }
