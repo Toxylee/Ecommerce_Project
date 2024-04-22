@@ -5,6 +5,7 @@ import com.ecoomerce.dto.CategoryResponse;
 import com.ecoomerce.model.Category;
 import com.ecoomerce.services.CategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,28 +17,33 @@ import java.util.List;
 public class CategoryController {
 private final CategoryService categoryService;
     @PostMapping("/add")
-    public CategoryResponse addCategory(@RequestBody CategoryRequest request){
-        return categoryService.addCategory(request);
+    public ResponseEntity<String> addCategory(@RequestBody CategoryRequest request, @RequestParam("merchantCode")String merchantCode){
+        return categoryService.addCategory(request,merchantCode);
     }
 
     @PutMapping("/update")
-    public CategoryResponse updateCategory(@RequestBody CategoryRequest request,@RequestParam("categoryCode")String categoryCode){
+    public ResponseEntity<String> updateCategory(@RequestBody CategoryRequest request, @RequestParam("categoryCode")String categoryCode){
         return categoryService.updateCategory(request,categoryCode);
     }
 
     @PostMapping("/add-product")
-    public String addProduct(@RequestParam("productCode")String productCode,@RequestParam("categoryCode")String categoryCode){
-        return categoryService.addProduct(productCode,categoryCode);
+    public ResponseEntity<String> addProduct(@RequestParam("productCodes")List<String> productCodes, @RequestParam("categoryCode")String categoryCode){
+        return categoryService.addProduct(productCodes,categoryCode);
     }
 
     @GetMapping("/all")
-    public List<Category> allCategory(){
-        return categoryService.listCategory();
+    public List<Category> allCategory(@RequestParam("merchantCode")String merchantCode){
+        return categoryService.listCategory(merchantCode);
     }
 
     @DeleteMapping("/delete")
-    public String deleteCategory(@RequestParam("categoryCode")String categoryCodee){
+    public ResponseEntity<String> deleteCategory(@RequestParam("categoryCode")String categoryCodee){
         return categoryService.deleteCategory(categoryCodee);
+    }
+
+    @PutMapping("/config")
+    public ResponseEntity<String> updateConfig(@RequestParam("configCode")String configCode,@RequestParam("font")String font,@RequestParam("color")String color,@RequestParam("logoUrl")String logoUrl){
+        return categoryService.updateConfiguration(configCode,font,color,logoUrl);
     }
 
 }

@@ -3,14 +3,19 @@ package com.ecoomerce.services;
 import com.ecoomerce.dto.LoginResponseDto;
 import com.ecoomerce.dto.MerchantRequest;
 import com.ecoomerce.dto.MerchantResponse;
+import com.ecoomerce.exception.BadRequestException;
+import com.ecoomerce.model.Configuration;
 import com.ecoomerce.model.Merchant;
 import com.ecoomerce.model.Roles;
+import com.ecoomerce.repository.ConfigurationRepository;
 import com.ecoomerce.repository.MerchantRepository;
 import com.ecoomerce.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -26,6 +31,7 @@ import java.util.*;
 public class AuthenticationService {
     private final MerchantRepository merchantRepository;
     private final RoleRepository roleRepository;
+    private final ConfigurationRepository configurationRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
@@ -36,7 +42,17 @@ public class AuthenticationService {
         int productCode = random.nextInt(9000)+1000;
         return "M-".concat(String.valueOf(productCode));
     }
-    public MerchantResponse registerMerchant(MerchantRequest load){
+
+    private String configCode(){
+        Random random = new Random();
+        int configCode = random.nextInt(9000)+1000;
+        return "C-".concat(String.valueOf(configCode));
+    }
+    public ResponseEntity<String> registerMerchant(MerchantRequest load){
+        Optional<Merchant> merchantOptional = merchantRepository.findByEmail(load.getEmail());
+        if(merchantOptional.isPresent()){
+            return ResponseEntity.badRequest().body("Merchant already exist");
+        }
         String encodedPassword = passwordEncoder.encode(load.getPassword());
         Roles userRole = roleRepository.findByAuthority("MERCHANT").get();
         Set<Roles> authorities = new HashSet<>();
@@ -51,22 +67,17 @@ public class AuthenticationService {
         merchant.setDateCreated(new Date());
         merchant.setBusinessName(load.getBusinessName());
         merchant.setAuthorities(authorities);
+       Configuration configuration = new Configuration();
+       configuration.setColour("Blue");
+       configuration.setConfigurationCode(configCode());
+       configuration.setLogoUrl("interswitchimage");
+       configuration.setFonts("Time News Roman");
+       configuration.setMerchant(merchant);
+       configurationRepository.save(configuration);
         merchantRepository.save(merchant);
-        return modelMapper.map(merchant, MerchantResponse.class);
+        return ResponseEntity.ok().body("Merchant registered successfully");
     }
 
-
-    public String updateRoles(Integer roleId, String authority){
-        Optional<Roles> rolesOptional = roleRepository.findRolesByRoleId(roleId);
-        if(rolesOptional.isEmpty()){
-            throw new RuntimeException("Roles Not Found");
-        }else {
-            Roles roles =rolesOptional.get();
-            roles.setAuthority(authority.toUpperCase());
-            roleRepository.save(roles);
-            return "Your roles is ".concat(authority);
-        }
-    }
 
     public LoginResponseDto loginUser(String email, String password){
 
@@ -74,13 +85,13 @@ public class AuthenticationService {
             Authentication auth = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(email, password)
             );
-
             String token = tokenService.generateJwt(auth);
-
             return new LoginResponseDto(merchantRepository.findByEmail(email).get(), token);
 
-        } catch(AuthenticationException e){
-            return new LoginResponseDto(null, "");
+        } catch (BadCredentialsException e) {
+            return new LoginResponseDto(null, "Incorrect email or password");
+        } catch (AuthenticationException e) {
+            return new LoginResponseDto(null, "Authentication failed: " + e.getMessage());
         }
     }
 

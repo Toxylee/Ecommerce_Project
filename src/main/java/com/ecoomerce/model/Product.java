@@ -1,5 +1,6 @@
 package com.ecoomerce.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,7 +36,7 @@ public class Product implements Serializable {
     @Column(name = "product_code")
     private String productCode;
 
-    @Column(name = "product_name",unique = true)
+    @Column(name = "product_name", unique = true)
     private String productName;
 
     @Column(name = "brand_name")
@@ -73,11 +74,12 @@ public class Product implements Serializable {
 
     @Column(name = "last_modified")
     private Date lastModified;
-
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "category_fk")
     private Category category;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "merchant_fk")
     private Merchant merchant;

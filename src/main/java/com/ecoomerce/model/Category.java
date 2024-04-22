@@ -52,13 +52,22 @@ public class Category implements Serializable {
     private Date lastModified;
 
     @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "merchant_fk")
+    private Merchant merchant;
+
+    @JsonIgnore
     @OneToMany(mappedBy = "category")
     @Builder.Default
     private Set<Product> products = new LinkedHashSet<>();
 
     public void addProduct(Product product) {
         if (Objects.nonNull(product)) {
-          products.add(product);
+            products.add(product);
         }
+    }
+
+    public void addProducts(List<Product> products) {
+        this.products.addAll(products);
     }
 }

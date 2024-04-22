@@ -6,6 +6,7 @@ import com.ecoomerce.dto.MerchantRequest;
 import com.ecoomerce.dto.MerchantResponse;
 import com.ecoomerce.services.AuthenticationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,7 +17,7 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/register")
-    public MerchantResponse registerUser(@RequestBody MerchantRequest request){
+    public ResponseEntity<String> registerUser(@RequestBody MerchantRequest request){
         return authenticationService.registerMerchant(request);
     }
 

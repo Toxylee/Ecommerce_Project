@@ -1,21 +1,19 @@
 package com.ecoomerce.dto;
 
 import lombok.Data;
+import lombok.NonNull;
 
-import javax.persistence.Column;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.Date;
 
 @Data
 public class ProductRequest {
-
     private String productName;
 
     private String brandName;
 
     private String productDescription;
-private String categoryCode;
-
+    private String categoryCode;
     private int qty;
 
     private BigDecimal sellingPrice;
@@ -25,7 +23,6 @@ private String categoryCode;
     private BigDecimal costPrice;
 
     private String productImageUrl;
-
     private String unitOfMeasurement;
 
 }
