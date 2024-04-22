@@ -6,15 +6,11 @@ Multi-Tenancy: The platform will support multiple tenants, each with its own sep
 
 1. User Management: The system will provide user authentication and authorization functionalities, allowing users to register, log in, and manage their accounts.
 
-2. Product Catalog: Each tenant will have its own product catalog, allowing them to add, update, and delete products. Customers can browse through the catalog, view product details, and make purchases.
+2. Product Catalog: Each tenant will have its own product catalog, allowing them to add and update products. Customers can browse through the catalog, view product details, and make purchases.
 
-3. Shopping Cart: Customers can add products to their shopping carts, view cart contents, and proceed to checkout.
+3. Category Catalog: Each tenant will have its own category catalog, allowing them to add and update catalog. Customers can browse through the catalog, view catalog details, and add products to category..
 
-4. Order Management: The platform will support order management functionalities, allowing users to place orders, track order status, and view order history.
-
-5. Payment Integration: Integration with payment gateways to facilitate secure online payments.
-
-6. Admin Dashboard: Administrators will have access to an admin dashboard where they can manage tenant accounts, view analytics, and perform administrative tasks.
+4. Transaction Management: The platform will support transaction management functionalities, allowing users to sell their products, track status by transactionDate,product item and batch number.
 
 **TECHNOLOGIES USED**
 1. Java Spring Boot: For building microservices and handling HTTP requests.
