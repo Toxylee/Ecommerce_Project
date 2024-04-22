@@ -1,7 +1,7 @@
-INTRODUCTION
+**INTRODUCTION**
 This project aims to create a multi-tenant ecommerce website using Java Spring Boot, Lombok, Spring Data JPA, and MySQL. The system will be designed as a collection of microservices, each responsible for specific functionalities of the ecommerce platform. The use of microservices architecture enables modularity, scalability, and easier maintenance of the system.
 
-FEATURES
+**FEATURES**
 Multi-Tenancy: The platform will support multiple tenants, each with its own separate database schema. This allows for isolation of data and configurations between different tenants.
 
 1. User Management: The system will provide user authentication and authorization functionalities, allowing users to register, log in, and manage their accounts.
@@ -16,7 +16,7 @@ Multi-Tenancy: The platform will support multiple tenants, each with its own sep
 
 6. Admin Dashboard: Administrators will have access to an admin dashboard where they can manage tenant accounts, view analytics, and perform administrative tasks.
 
-TECHNOLOGIES USED
+**TECHNOLOGIES USED**
 1. Java Spring Boot: For building microservices and handling HTTP requests.
 2. Lombok: To reduce boilerplate code and improve code readability.
 3. Spring Data JPA: For interacting with the MySQL database and performing CRUD operations.
@@ -25,14 +25,17 @@ TECHNOLOGIES USED
 6. Thymeleaf: For server-side templating to generate dynamic HTML pages.
 7. RESTful APIs: For communication between microservices and external clients.
 
-SETUP INSTRUCTION
+
+**Postman Collection:** https://grey-robot-178198.postman.co/workspace/My-Workspace~ed0d19f7-5398-4b7d-81fe-206eca557a6c/folder/27808364-a7a68ed9-041c-44d8-ad6b-3e5af26c1468?action=share&creator=27808364&ctx=documentation
+
+**SETUP INSTRUCTION**
 Clone the repository to your local machine.
 Ensure that Java and Maven are installed on your system.
 Set up MySQL and create a database for the ecommerce platform.
 Configure the database connection properties in the application.properties file.
 Build and run each microservice using Maven or your preferred IDE.
 
-USAGE
+**USAGE**
 Access the web interface through the provided URL.
 Register an account or log in if you already have one.
 Browse through the product catalog, add items to your shopping cart, and proceed to checkout.
@@ -40,12 +43,14 @@ Make payments securely using integrated payment gateways.
 Administrators can access the admin dashboard to manage tenant accounts, view analytics, and perform administrative tasks.
 
 
-Acknowledgements
+**Acknowledgements**
 Special thanks to the developers of Java Spring Boot, Lombok, Spring Data JPA, and MySQL for providing the tools and technologies necessary to build this ecommerce platform.
 
-Team Members
+**Team Members**
 Zikrulahi Atobatele - (Team Lead),
 Uzoma Nwachukwu, 
 Tokunbo Ogunjobi, 
 Victor Otubure, 
 Samuel Onyedikachi - (PM)
+
+
